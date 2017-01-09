@@ -1,3 +1,23 @@
+/*
+
+THINGS IN PROGRESS:
+    make move function for boxes paddles and the such like
+    can't add or subract vectors in place with them as pos not def locally
+
+    fixed with hackkery
+
+
+
+
+*/
+
+
+
+
+
+
+
+
 var canvas = document.getElementById('renderCanvas');
 var engine = new BABYLON.Engine(canvas, true);
 
@@ -24,8 +44,10 @@ var createScene = function(){
 	sphere1.position = new BABYLON.Vector3(0,0,-1);
 	//var sphere2 = new BABYLON.Mesh.CreateSphere('sphere2', 16, 4, scene);
 
- 	var box = BABYLON.MeshBuilder.CreateBox('box', {width: 10, height: 3, depth: 5,}, scene);
- 	box.position = new BABYLON.Vector3(0,0,2.5);
+    //cube (xyzlwbnumspacescene)
+    var cube = new Cube(0,0,2.5,3,3,3,3,2,scene);
+    cube.draw();
+
 		
 	var ground = new BABYLON.Mesh.CreatePlane('ground', 100, scene);
 	ground.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
@@ -43,23 +65,24 @@ var createScene = function(){
     	if(event.key == " "){
     		console.log("spacedicks");
     		camera.position.addInPlace(charJump);
-    		box.position.addInPlace(charJump);
+    		cube.position.addInPlace(charJump);
     		console.log(camera.applyGravity)
     	}
 //reg controls
     	if(event.key == "a"){
-    		box.position.subtractInPlace(boxVectorx);
+    		cube.position.subtractInPlace(boxVectorx);
+            // cube.move()
     	}
 
     	if(event.key == "d"){
-   			box.position.addInPlace(boxVectorx);
+   			cube.position.addInPlace(boxVectorx);
     	}    	
 
     	if(event.key == "w"){
-    		box.position. addInPlace(boxVectorz);
+    		cube.position. addInPlace(boxVectorz);
     	}
     	if(event.key == "s"){
-    		box.position.subtractInPlace(boxVectorz);
+    		cube.position.subtractInPlace(boxVectorz);
     	}
     	if (event.key == "a" && event.key == "w"){
 
@@ -97,16 +120,16 @@ var createScene = function(){
 
     //Then apply collisions and gravity to the active camera
     camera.checkCollisions = true;
-    camera.applyGravity = true;
+   // camera.applyGravity = true;
     console.log("nosersiouslyWAT")
-    box.applyGravity = true;
+    cube.applyGravity = true;
 
     //Set the ellipsoid around the camera (e.g. your player's size)
     camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
 
     //finally, say which mesh will be collisionable
     ground.checkCollisions = true;
-    box.checkCollisions = true;
+    cube.checkCollisions = true;
     sphere1.checkCollisions = true;
 
 	
@@ -132,7 +155,6 @@ var createScene = function(){
 
 		engine.runRenderLoop(function(){
 			scene.render();
-
 		});
 
 		window.addEventListener('resize', function() {
