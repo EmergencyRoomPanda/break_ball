@@ -4,12 +4,12 @@ store specific knockables in NVP {}, look up by name apply effects
 */
 
 //CUBES
-function Cube(x,y,z,l,w,h,number,_,scene){
+function Cube(x,y,z,l,w,h,scene){
 
 		this.l = l;
 		this.w = w;
 		this.h = h;
-		this.spacing = _;
+		// this.spacing = _;
 
 	this.draw = function(){
 		var box = BABYLON.MeshBuilder.CreateBox('box', {width: l, height: w, depth: h,}, scene);
@@ -36,7 +36,7 @@ function Cubes(number,_,scene){
 		this.spacing = _;
 
 	this.drawRow = function(){
-		var cube = new Cube(3,3,3,4,4,4,2,1,scene);
+		var cube = new Cube(3,3,3,4,4,4,scene)//,2,1,scene);
 	}
 
 	this.drawCol = function(){

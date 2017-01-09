@@ -6,30 +6,25 @@ THINGS IN PROGRESS:
 
     fixed with hackkery
 
-
+added OimoJSPlugin for use with applyimpulse setgravity
+doesnt functon with cdns... get fullbab
 
 
 */
 
 
-
-
-
-
-
-
 var canvas = document.getElementById('renderCanvas');
 var engine = new BABYLON.Engine(canvas, true);
 
-
 var createScene = function(){
 		var scene = new BABYLON.Scene(engine);
+//        scene.enablePhysics(new BABYLON.Vector3(0, -10, 0), new BABYLON.OimoJSPlugin());
 
 //lights camera
-	var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0,5,-15), scene);
+	//var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0,5,-15), scene);
  	//var camera = new BABYLON.ArcRotateCamera("camera1",  0, 0, 0, new BABYLON.Vector3(0, 0, -0), scene);
- 	//var camera = new BABYLON.FollowCamera("camera1", new BABYLON.Vector3(0,5,-15), scene, box);
-	camera.setTarget(BABYLON.Vector3.Zero());
+ 	var camera = new BABYLON.FollowCamera("camera1", new BABYLON.Vector3(0,5,-15), scene, cube);
+	//camera.setTarget(BABYLON.Vector3.Zero());
 	//camera.setPosition(new BABYLON.Vector3(0, 0, -20));
 	camera.attachControl(canvas, false);
 	//var light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,-10), scene);
@@ -42,10 +37,8 @@ var createScene = function(){
 //objects
 	var sphere1 = new BABYLON.Mesh.CreateSphere('sphere1', 16, 4, scene);
 	sphere1.position = new BABYLON.Vector3(0,0,-1);
-	//var sphere2 = new BABYLON.Mesh.CreateSphere('sphere2', 16, 4, scene);
-
-    //cube (xyzlwbnumspacescene)
-    var cube = new Cube(0,0,2.5,3,3,3,3,2,scene);
+    //cube (xyzlwh,scene)
+    var cube = new Cube(0,0,2.5,3,3,3,scene);
     cube.draw();
 
 		
@@ -85,7 +78,7 @@ var createScene = function(){
     		cube.position.subtractInPlace(boxVectorz);
     	}
     	if (event.key == "a" && event.key == "w"){
-
+            cube.position.subtractInPlace(boxVectorx).addInPlace(boxVectorz)
     	}
 //diagonal controls 
     	if (event.key == "a" && event.key == "s"){
