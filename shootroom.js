@@ -7,7 +7,6 @@ THINGS IN PROGRESS:
     fixed with hackkery
 
 added OimoJSPlugin for use with applyimpulse setgravity
-doesnt functon with cdns... get fullbab
 
 
 */
@@ -18,12 +17,26 @@ var engine = new BABYLON.Engine(canvas, true);
 
 var createScene = function(){
 		var scene = new BABYLON.Scene(engine);
-//        scene.enablePhysics(new BABYLON.Vector3(0, -10, 0), new BABYLON.OimoJSPlugin());
+
+//Physics
+    scene.enablePhysics(new BABYLON.Vector3(0, -10, 0), new BABYLON.OimoJSPlugin());
+ //   scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
+    var charJump = new BABYLON.Vector3(0, 1 , 0);
+    //box move 
+    boxVectorx = new BABYLON.Vector3(.1,0,0);
+    boxVectorz = new BABYLON.Vector3(0,0,.1);
+
+    scene.fogEnabled = true;
+    scene.FOGMODE_EXP;
+    scene.fogDensity = 30;
+
 
 //lights camera
-	//var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0,5,-15), scene);
+	var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0,5,-15), scene);
+    
+    //var camera = new Camera(free,'character', new BABYLON.Vector3(0,5,-15), 4, scene);
  	//var camera = new BABYLON.ArcRotateCamera("camera1",  0, 0, 0, new BABYLON.Vector3(0, 0, -0), scene);
- 	var camera = new BABYLON.FollowCamera("camera1", new BABYLON.Vector3(0,5,-15), scene, cube);
+ 	//var camera = new BABYLON.FollowCamera("camera1", new BABYLON.Vector3(0,5,-100), scene);
 	//camera.setTarget(BABYLON.Vector3.Zero());
 	//camera.setPosition(new BABYLON.Vector3(0, 0, -20));
 	camera.attachControl(canvas, false);
@@ -34,33 +47,38 @@ var createScene = function(){
 
 	// console.log(cameraPosition);
 
+    var cone = BABYLON.MeshBuilder.CreateCylinder("cone", {diameterTop: 0, tessellation: 4}, scene);
+    cone.position = new BABYLON.Vector3(5,5,5);
+
 //objects
 	var sphere1 = new BABYLON.Mesh.CreateSphere('sphere1', 16, 4, scene);
-	sphere1.position = new BABYLON.Vector3(0,0,-1);
+	sphere1.position = new BABYLON.Vector3(0,0,0);
     //cube (xyzlwh,scene)
-    var cube = new Cube(0,0,2.5,3,3,3,scene);
-    cube.draw();
+    // var cube = new Cube(0,0,2.5,3,3,3,scene);
+    // cube.draw();
 
+    var row1 = new Cubes(10, 5, scene);
+    row1.drawRow(true);
+    row1.drawRow(false);
+    row1.drawCol(true);
+    row1.drawCol(false);
+    row1.drawSpike(true);
+    row1.drawSpike(false);
 		
-	var ground = new BABYLON.Mesh.CreatePlane('ground', 100, scene);
-	ground.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
-	ground.position = new BABYLON.Vector3(0, -1.5, 0);
+	// var ground = new BABYLON.Mesh.CreatePlane('ground', 100, scene);
+	// ground.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
+	// ground.position = new BABYLON.Vector3(0, -1.5, 0);
 
-//Physics
-    scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
-    var charJump = new BABYLON.Vector3(0, 1 , 0);
-    //box move 
-    boxVectorx = new BABYLON.Vector3(.1,0,0);
-    boxVectorz = new BABYLON.Vector3(0,0,.1);
+
 
 
     document.addEventListener("keydown", function(event){
-    	if(event.key == " "){
-    		console.log("spacedicks");
-    		camera.position.addInPlace(charJump);
-    		cube.position.addInPlace(charJump);
-    		console.log(camera.applyGravity)
-    	}
+    	// if(event.key == " "){
+    	// 	console.log("spacedicks");
+    	// 	camera.position.addInPlace(charJump);
+    	// 	cube.position.addInPlace(charJump);
+    	// 	console.log(camera.applyGravity)
+    	// }
 //reg controls
     	if(event.key == "a"){
     		cube.position.subtractInPlace(boxVectorx);
@@ -115,14 +133,14 @@ var createScene = function(){
     camera.checkCollisions = true;
    // camera.applyGravity = true;
     console.log("nosersiouslyWAT")
-    cube.applyGravity = true;
+//    cube.applyGravity = true;
 
     //Set the ellipsoid around the camera (e.g. your player's size)
     camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
 
     //finally, say which mesh will be collisionable
-    ground.checkCollisions = true;
-    cube.checkCollisions = true;
+//    ground.checkCollisions = true;
+//    cube.checkCollisions = true;
     sphere1.checkCollisions = true;
 
 	
