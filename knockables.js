@@ -30,9 +30,12 @@ function Cube( x, y, z, size, scene){
 
 	}
 
-	this.move = function(){
+	this.move = function( inverted ){
 		//apply physics fuckin OIMO YO
-		new BABYLON.OimoJSPlugin.applyImplulse();
+		inverted.toString()
+		console.log(inverted);
+		BABYLON.OimoJSPlugin.applyImplulse(imposter ,new BABYLON.Vector3(1,0,0), new BABYLON.Vector3(1,0,0));
+
 
 
 	}

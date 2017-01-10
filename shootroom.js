@@ -16,10 +16,11 @@ var canvas = document.getElementById('renderCanvas');
 var engine = new BABYLON.Engine(canvas, true);
 
 var createScene = function(){
-		var scene = new BABYLON.Scene(engine);
-
 //Physics
+    var scene = new BABYLON.Scene(engine);
     scene.enablePhysics(new BABYLON.Vector3(0, -10, 0), new BABYLON.OimoJSPlugin());
+    scene.collisionsEnabled = true;
+    
  //   scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
     var charJump = new BABYLON.Vector3(0, 1 , 0);
     //box move 
@@ -32,14 +33,26 @@ var createScene = function(){
 
 
 //lights camera
-	var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0,5,-15), scene);
+	//var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0,5,-15), scene);
 
-    //var camera = new Camera(free,'character', new BABYLON.Vector3(0,5,-15), 4, scene);
+    var camera = new Camera('run','character', new BABYLON.Vector3(0,5,-15), 4, scene);
+   // camera.fly();
+      camera.run();
+        camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
+
+
+   // camera.ellipsoid.setPhysicsState({impostor:BABYLON.PhysicsEngine.SphereImpostor, move:true, mass:1, friction:0.5, restitution:0.5});
+    //d.setPhysicsState({impostor:BABYLON.PhysicsEngine.BoxImpostor, move:true, mass:1, friction:0.5, restitution:0.1});
+    
+
+
+
+
  	//var camera = new BABYLON.ArcRotateCamera("camera1",  0, 0, 0, new BABYLON.Vector3(0, 0, -0), scene);
  	//var camera = new BABYLON.FollowCamera("camera1", new BABYLON.Vector3(0,5,-100), scene);
 	//camera.setTarget(BABYLON.Vector3.Zero());
 	//camera.setPosition(new BABYLON.Vector3(0, 0, -20));
-	camera.attachControl(canvas, false);
+	//camera.attachControl(canvas, false);
 	//var light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,-10), scene);
 	var light2 = new BABYLON.HemisphericLight('light2', new BABYLON.Vector3(0,2,3), scene);
 //	var cameraPosition = new BABYLON.Vector3(camera.position.x, camera.position.y, camera.position.z);
@@ -54,12 +67,12 @@ var createScene = function(){
 	var sphere1 = new BABYLON.Mesh.CreateSphere('sphere1', 16, 4, scene);
 	sphere1.position = new BABYLON.Vector3(0,0,0);
     //cube (xyzlwh,scene)
-    var cube = new Cube( 0, 3, 2.5, 5, scene);
+    var cube = new Cube( 0, 0, 0, 35, scene);
     cube.position  = new BABYLON.Vector3(5,5,5);
     cube.draw();
 
     var sky = new Sky(0,0,0,scene);
-    sky.draw();
+    //sky.draw();
 
     var row1 = new Cubes(10, 5, scene);
     row1.drawRow(true);
@@ -73,6 +86,23 @@ var createScene = function(){
 	// ground.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
 	// ground.position = new BABYLON.Vector3(0, -1.5, 0);
 
+    var mat = new BABYLON.StandardMaterial("ground", scene);
+    var t = new BABYLON.Texture("images/concrete.jpg", scene);
+    t.uScale = t.vScale = 30;
+    mat.diffuseTexture = t;
+    mat.specularColor = BABYLON.Color3.Black();
+
+// Object
+    var g = BABYLON.Mesh.CreateBox("ground1", 200, scene);
+    g.position.y = -20;
+    g.scaling.y = 0.01;
+    g.material = mat;
+
+    g.checkCollisions = true;
+    g.backFaceCulling = false;
+    g.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false});
+
+
 
 
 
@@ -85,8 +115,8 @@ var createScene = function(){
     	// }
 //reg controls
     	if(event.key == "a"){
-    		cube.position.subtractInPlace(boxVectorx);
-            // cube.move()
+    		//cube.position.subtractInPlace(boxVectorx);
+            cube.move(true);
     	}
 
     	if(event.key == "d"){
@@ -130,15 +160,14 @@ var createScene = function(){
 
     });
 // Enable Collisions
-    scene.collisionsEnabled = true;
+    scene.enablePhysics(new BABYLON.Vector3(0,-10,0), new BABYLON.OimoJSPlugin());
 //Then apply collisions and gravity to the active camera
-    camera.checkCollisions = true;
+   //  camera.checkCollisions = true;
    // camera.applyGravity = true;
     console.log("nosersiouslyWAT");
 //    cube.applyGravity = true;
 
     //Set the ellipsoid around the camera (e.g. your player's size)
-    camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
 
     //finally, say which mesh will be collisionable
 //    ground.checkCollisions = true;
