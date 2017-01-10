@@ -8,23 +8,29 @@ offset vars for cube and take into account bounding mesh rad at theta
 */
 
 //CUBES
-function Cube(x,y,z,l,w,h,scene){
+function Cube( x, y, z, size, scene){
 
-		this.l = l;
-		this.w = w;
-		this.h = h;
 		this.position; 
+		console.log("buttssss")
 
 	this.draw = function(){
-		var box = BABYLON.Mesh.CreateBox('box', {width: w, height: h, depth: l}, scene);
- 		box.position = new BABYLON.Vector3(x,y,z);
- 		//functional movement
- 		this.position = box.position; 
+		// console.log("biteme")
+		// var box = BABYLON.MeshBuilder.CreateBox('cube', {width: 5, height: 5, depth: 5}, scene);
+		// console.log(box)
+ 	// 	//functional movement
+
+ 	var skybox = BABYLON.Mesh.CreateBox("skyBox", 100.0, scene);
+	var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+		skyboxMaterial.backFaceCulling = false;
+		skyboxMaterial.disableLighting = true;
+		skybox.material = skyboxMaterial;
+ 		this.position = skybox.position; 
 
 	}
 
 	this.move = function(){
 		//apply physics fuckin OIMO YO
+		new BABYLON.OimoJSPlugin.applyImplulse();
 
 
 	}

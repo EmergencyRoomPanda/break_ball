@@ -33,7 +33,7 @@ var createScene = function(){
 
 //lights camera
 	var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0,5,-15), scene);
-    
+
     //var camera = new Camera(free,'character', new BABYLON.Vector3(0,5,-15), 4, scene);
  	//var camera = new BABYLON.ArcRotateCamera("camera1",  0, 0, 0, new BABYLON.Vector3(0, 0, -0), scene);
  	//var camera = new BABYLON.FollowCamera("camera1", new BABYLON.Vector3(0,5,-100), scene);
@@ -54,8 +54,9 @@ var createScene = function(){
 	var sphere1 = new BABYLON.Mesh.CreateSphere('sphere1', 16, 4, scene);
 	sphere1.position = new BABYLON.Vector3(0,0,0);
     //cube (xyzlwh,scene)
-    // var cube = new Cube(0,0,2.5,3,3,3,scene);
-    // cube.draw();
+    var cube = new Cube( 0, 3, 2.5, 5, scene);
+    cube.position  = new BABYLON.Vector3(5,5,5);
+    cube.draw();
 
     var row1 = new Cubes(10, 5, scene);
     row1.drawRow(true);
@@ -132,7 +133,7 @@ var createScene = function(){
     //Then apply collisions and gravity to the active camera
     camera.checkCollisions = true;
    // camera.applyGravity = true;
-    console.log("nosersiouslyWAT")
+    console.log("nosersiouslyWAT");
 //    cube.applyGravity = true;
 
     //Set the ellipsoid around the camera (e.g. your player's size)
@@ -140,7 +141,7 @@ var createScene = function(){
 
     //finally, say which mesh will be collisionable
 //    ground.checkCollisions = true;
-//    cube.checkCollisions = true;
+    cube.checkCollisions = true;
     sphere1.checkCollisions = true;
 
 	
