@@ -7,7 +7,7 @@ offset vars for cube and take into account bounding mesh rad at theta
 
 */
 
-//CUBES
+//CUBE
 function Cube( x, y, z, size, scene){
 
 		this.position; 
@@ -18,12 +18,14 @@ function Cube( x, y, z, size, scene){
 		// var box = BABYLON.MeshBuilder.CreateBox('cube', {width: 5, height: 5, depth: 5}, scene);
 		// console.log(box)
  	// 	//functional movement
+ 	console.log("bananasfo real")
 
- 	var skybox = BABYLON.Mesh.CreateBox("skyBox", 100.0, scene);
+ 	var skybox = BABYLON.Mesh.CreateBox("skyBox", size, scene);
 	var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
 		skyboxMaterial.backFaceCulling = false;
-		skyboxMaterial.disableLighting = true;
+		//skyboxMaterial.disableLighting = true;
 		skybox.material = skyboxMaterial;
+		skybox.position = new BABYLON.Vector3(x,y,z);
  		this.position = skybox.position; 
 
 	}
@@ -39,6 +41,8 @@ function Cube( x, y, z, size, scene){
 	}
 };
 
+
+//Cubes
 function Cubes(number,_,scene){
 //inv
 	//dir =1 pos direction t

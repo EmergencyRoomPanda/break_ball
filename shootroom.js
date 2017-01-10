@@ -58,6 +58,9 @@ var createScene = function(){
     cube.position  = new BABYLON.Vector3(5,5,5);
     cube.draw();
 
+    var sky = new Sky(0,0,0,scene);
+    sky.draw();
+
     var row1 = new Cubes(10, 5, scene);
     row1.drawRow(true);
     row1.drawRow(false);
@@ -126,11 +129,9 @@ var createScene = function(){
 
 
     });
-
-    // Enable Collisions
+// Enable Collisions
     scene.collisionsEnabled = true;
-
-    //Then apply collisions and gravity to the active camera
+//Then apply collisions and gravity to the active camera
     camera.checkCollisions = true;
    // camera.applyGravity = true;
     console.log("nosersiouslyWAT");
@@ -143,6 +144,7 @@ var createScene = function(){
 //    ground.checkCollisions = true;
     cube.checkCollisions = true;
     sphere1.checkCollisions = true;
+//    sky.checkCollisions=true;
 
 	
 
