@@ -19,14 +19,16 @@ function Cube( x, y, z, size, scene){
 		// console.log(box)
  	// 	//functional movement
  	console.log("bananasfo real")
+ 	var boxMaterial = new BABYLON.StandardMaterial("Box", scene);
+	boxMaterial.backFaceCulling = false;
+	var box = BABYLON.Mesh.CreateBox("Box1", size, scene);
+	box.material = boxMaterial;
+ 	
 
- 	var skybox = BABYLON.Mesh.CreateBox("skyBox", size, scene);
-	var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
-		skyboxMaterial.backFaceCulling = false;
-		//skyboxMaterial.disableLighting = true;
-		skybox.material = skyboxMaterial;
-		skybox.position = new BABYLON.Vector3(x,y,z);
- 		this.position = skybox.position; 
+		// skyboxMaterial.disableLighting = true;
+
+		box.position = new BABYLON.Vector3(x,y,z);
+ 		this.position = box.position;
 
 	}
 
@@ -34,7 +36,7 @@ function Cube( x, y, z, size, scene){
 		//apply physics fuckin OIMO YO
 		inverted.toString()
 		console.log(inverted);
-		BABYLON.OimoJSPlugin.applyImplulse(imposter ,new BABYLON.Vector3(1,0,0), new BABYLON.Vector3(1,0,0));
+	//	BABYLON.OimoJSPlugin.applyImplulse(imposter ,new BABYLON.Vector3(1,0,0), new BABYLON.Vector3(1,0,0));
 
 
 
