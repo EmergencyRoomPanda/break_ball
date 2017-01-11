@@ -7,6 +7,7 @@ function Camera(type, name, startPos, speed, scene){
 			this.position = camera.position;
 			camera.checkCollisions = true;
 	 		camera.applyGravity = true;
+	 		//camera.maxZ = 500;
 		}
 	}
 

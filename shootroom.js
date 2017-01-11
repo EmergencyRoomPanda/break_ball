@@ -39,8 +39,8 @@ var createScene = function(){
 	// console.log(cameraPosition);
 
 //objects
-	var sphere1 = new BABYLON.Mesh.CreateSphere('sphere1', 16, 4, scene);
-	sphere1.position = new BABYLON.Vector3(4,1,10);
+	var sphere1 = new BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene);
+	sphere1.position = new BABYLON.Vector3(0,8,0);
     sphere1.checkCollisions = true;
 
     var boxcol = new BABYLON.Mesh.CreateBox('boxtest', 6, scene);
@@ -86,9 +86,41 @@ var createScene = function(){
     plane.material = st;
     plane.checkCollisions = true;
 
+    // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
+
+    // Move the sphere upward 1/2 its height
+    sphere.position.y = 10;
+
+    // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
+    var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene);
+    
+    scene.enablePhysics();
+    
+    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 0.9 }, scene);
+    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
+
+
+
+
+
+
+    //var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene);
+    //ground.checkCollisions = true;
+
+//PHYSICS
+    //sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 0.99 }, scene);
+    //g.physicsImpostor = new BABYLON.PhysicsImpostor(g, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.99 }, scene);
+
+  //  ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.99 }, scene);
+
+
+
+
 
    // g.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false});
-    //new BABYLON.PhysicsImpostor(object: IPhysicsEnabledObject, type: number, options: PhysicsImpostorParameters, scene:BABYLON.Scene);
+
+  //  var imp = new BABYLON.PhysicsImpostor(object: IPhysicsEnabledObject, type: , options: PhysicsImpostorParameters, scene:BABYLON.Scene);
 
 
 
