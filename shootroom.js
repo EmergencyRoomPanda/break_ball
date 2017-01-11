@@ -25,9 +25,9 @@ var createScene = function(){
     scene.collisionsEnabled = true;
 
 //lights camera
-    var camera = new Camera('run','character', new BABYLON.Vector3(0,5,-15), 4, scene);
-   // camera.fly();
-    camera.run();
+    var camera = new Camera('free','character', new BABYLON.Vector3(0,5,-15), 4, scene);
+    camera.fly();
+    //camera.run();
     camera.checkCollisions = true;
 
 
@@ -43,9 +43,9 @@ var createScene = function(){
 	sphere1.position = new BABYLON.Vector3(0,8,0);
     sphere1.checkCollisions = true;
 
-    var boxcol = new BABYLON.Mesh.CreateBox('boxtest', 6, scene);
-    boxcol.position = new BABYLON.Vector3(20,1.5,10);
-    boxcol.checkCollisions = true;
+    // var boxcol = new BABYLON.Mesh.CreateBox('boxtest', 6, scene);
+    // boxcol.position = new BABYLON.Vector3(20,1.5,10);
+    // boxcol.checkCollisions = true;
     
     // var cube = new Cube( 10, 5, 10, 10, scene);
     // cube.draw();
@@ -66,39 +66,32 @@ var createScene = function(){
     // row1.drawSpike(true);
     // row1.drawSpike(false);
 
-    var mat = new BABYLON.StandardMaterial("wall", scene);
-    var t = new BABYLON.Texture("images/concrete.jpg", scene);
-    t.uScale = t.vScale = 30;
-    mat.diffuseTexture = t;
-    mat.specularColor = BABYLON.Color3.Black();
+//     var mat = new BABYLON.StandardMaterial("wall", scene);
+//     var t = new BABYLON.Texture("images/concrete.jpg", scene);
+//     t.uScale = t.vScale = 30;
+//     mat.diffuseTexture = t;
+//     mat.specularColor = BABYLON.Color3.Black();
 
-//Object
-    var g = BABYLON.Mesh.CreateBox("wall", {length:10, width:5, depth:2}, scene);
-    g.position = new BABYLON.Vector3(2,2,2);
-    g.material = mat;
-    g.checkCollisions = true;
-    g.backFaceCulling = false; 
+// //Object
+//     var g = BABYLON.Mesh.CreateBox("wall", {length:10, width:5, depth:2}, scene);
+//     g.position = new BABYLON.Vector3(2,2,2);
+//     g.material = mat;
+//     g.checkCollisions = true;
+//     g.backFaceCulling = false; 
 
 
-    var plane = BABYLON.Mesh.CreatePlane("plane", 10.0, scene, true, BABYLON.Mesh.DOUBLESIDE);
-    var st = new BABYLON.StandardMaterial("myplanematerial", scene);
-    st.backFaceCulling = false;
-    plane.material = st;
-    plane.checkCollisions = true;
+    // var plane = BABYLON.Mesh.CreatePlane("plane", 10.0, scene, true, BABYLON.Mesh.DOUBLESIDE);
+    // var st = new BABYLON.StandardMaterial("myplanematerial", scene);
+    // st.backFaceCulling = false;
+    // plane.material = st;
+    // plane.checkCollisions = true;
 
     // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
     var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
-
-    // Move the sphere upward 1/2 its height
     sphere.position.y = 10;
-
-    // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
-    var ground = BABYLON.Mesh.CreateGround("ground1", 6, 6, 2, scene);
     
-    scene.enablePhysics();
-    
-    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 0.9 }, scene);
-    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0.9 }, scene);
+    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 1 }, scene);
+    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene);
 
 
 

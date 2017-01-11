@@ -6,10 +6,12 @@ function Level(scene){
     mat.specularColor = BABYLON.Color3.Black();
 
 //Object
-    var g = BABYLON.Mesh.CreateBox("ground1", 200, scene);
+    var g = BABYLON.Mesh.CreateGround("ground1",9,8,0, scene); ///200, scene);
     g.position.y = -2;
     g.scaling.y = 0.01;
     g.material = mat;
     g.checkCollisions = true;
     g.backFaceCulling = false; 
+
+    return g;
 }
