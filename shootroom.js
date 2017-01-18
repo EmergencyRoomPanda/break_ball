@@ -7,9 +7,16 @@ THINGS IN PROGRESS:
     fixed with hackkery
 
 added OimoJSPlugin for use with applyimpulse setgravity
+gravity set
+imposters to be made individually in calls to element constructor classes
 
+
+make object hash priority queue idk to loop through nearby objects for collisions with cam
+maybe handled by fv + fog;
 
 */
+
+
 
 var canvas = document.getElementById('renderCanvas');
 var engine = new BABYLON.Engine(canvas, true);
@@ -18,6 +25,7 @@ var createScene = function(){
 //Physics
     // var scene = new BABYLON.Scene(engine);
     // scene.enablePhysics(new BABYLON.Vector3(0, -10, 0), new BABYLON.OimoJSPlugin());
+
     var scene = new BABYLON.Scene(engine);
     var gravityVector = new BABYLON.Vector3(0,-9.81, 0);
     var physicsPlugin = new BABYLON.OimoJSPlugin();
@@ -39,7 +47,7 @@ var createScene = function(){
 	// console.log(cameraPosition);
 
 //objects
-	var sphere1 = new BABYLON.Mesh.CreateSphere('sphere1', 16, 2, scene);
+	var sphere1 = new BABYLON.Mesh.CreateSphere('sphere1', 14, .5, scene);
 	sphere1.position = new BABYLON.Vector3(0,8,0);
     sphere1.checkCollisions = true;
 
@@ -55,8 +63,11 @@ var createScene = function(){
     // sky.draw();
     // sky.checkCollisions = true;
 
-    var ground = new Level(scene);
+    var ground = new Level(scene, 10, 10, -1, "ground");
     ground.checkCollisions = true;
+
+    // var paddle = new Level(scene, 2 , 2 , 0, "paddle");
+    // paddle.checkCollisions = true;
 
     // var row1 = new Cubes(10, 5, scene);
     // row1.drawRow(true);
@@ -66,18 +77,18 @@ var createScene = function(){
     // row1.drawSpike(true);
     // row1.drawSpike(false);
 
-//     var mat = new BABYLON.StandardMaterial("wall", scene);
-//     var t = new BABYLON.Texture("images/concrete.jpg", scene);
-//     t.uScale = t.vScale = 30;
-//     mat.diffuseTexture = t;
-//     mat.specularColor = BABYLON.Color3.Black();
+    var mat = new BABYLON.StandardMaterial("wall", scene);
+    var t = new BABYLON.Texture("images/concrete.jpg", scene);
+    t.uScale = t.vScale = 30;
+    mat.diffuseTexture = t;
+    mat.specularColor = BABYLON.Color3.Black();
 
 // //Object
-//     var g = BABYLON.Mesh.CreateBox("wall", {length:10, width:5, depth:2}, scene);
-//     g.position = new BABYLON.Vector3(2,2,2);
-//     g.material = mat;
-//     g.checkCollisions = true;
-//     g.backFaceCulling = false; 
+    var g = BABYLON.Mesh.CreateBox("wall", {length:10, width:5, depth:2}, scene);
+    g.position = new BABYLON.Vector3(2,2,2);
+    g.material = mat;
+    g.checkCollisions = true;
+    g.backFaceCulling = false; 
 
 
     // var plane = BABYLON.Mesh.CreatePlane("plane", 10.0, scene, true, BABYLON.Mesh.DOUBLESIDE);
@@ -87,11 +98,25 @@ var createScene = function(){
     // plane.checkCollisions = true;
 
     // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
-    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 16, 2, scene);
-    sphere.position.y = 10;
-    
-    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: 1 }, scene);
-    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1 }, scene);
+    var sphere = BABYLON.Mesh.CreateSphere("sphere1", 14, .5, scene);
+    sphere.position.y = 20;
+
+    //var cubepaddle = new Paddle(3, scene);
+    //cubepaddle.draw();
+    var cubepaddle = BABYLON.MeshBuilder.CreateBox("paddle", {size:2, width:2, height:.2, depth:2}, scene);
+    console.log("why the fuck");
+    cubepaddle.position = new BABYLON.Vector3(0,0,0);
+    cubepaddle.physicsImpostor = new BABYLON.PhysicsImpostor(cubepaddle, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9 }, scene);
+
+    cubepaddle.checkCollisions = true;
+
+
+    //ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 0 }, scene);
+    cubepaddle.physicsImpostor = new BABYLON.PhysicsImpostor(cubepaddle, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, restitution: 1}, scene);
+    // paddle.physicsImpostor.forceUpdate();
+
+    sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(sphere1, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, restitution: .5 }, scene);
+    sphere.physicsImpostor = new BABYLON.PhysicsImpostor(sphere, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 5, restitution: .5 }, scene);
 
 
 
@@ -116,51 +141,60 @@ var createScene = function(){
   //  var imp = new BABYLON.PhysicsImpostor(object: IPhysicsEnabledObject, type: , options: PhysicsImpostorParameters, scene:BABYLON.Scene);
 
 
+    scene.registerBeforeRender(function () {
+        cubepaddle.rotate(BABYLON.Axis.Z, 0.5);
+        cubepaddle.position.y += 0.1;
+        
+    })
 
 
 
     document.addEventListener("keydown", function(event){
-    	// if(event.key == " "){
-    	// 	console.log("spacedicks");
-    	// 	camera.position.addInPlace(charJump);
-    	// 	cube.position.addInPlace(charJump);
-    	// 	console.log(camera.applyGravity)
-    	// }
+    	if(event.key == " "){
+            cubepaddle.physicsImpostor.applyImpulse(new BABYLON.Vector3(0,10,0), cubepaddle.position);
+            console.log("fuckinellm8");
+    	}
 //reg controls
     	if(event.key == "a"){
-    		//cube.position.subtractInPlace(boxVectorx);
-           // cube.move(true);
+            cubepaddle.physicsImpostor.applyImpulse(new BABYLON.Vector3(-10,0,0), cubepaddle.position);
+            console.log("a");
     	}
 
     	if(event.key == "d"){
-   			//cube.position.addInPlace(boxVectorx);
+            cubepaddle.physicsImpostor.applyImpulse(new BABYLON.Vector3(10,0,0), cubepaddle.position);
+            console.log("d");
+
     	}    	
 
     	if(event.key == "w"){
-    		//cube.position. addInPlace(boxVectorz);
+            cubepaddle.physicsImpostor.applyImpulse(new BABYLON.Vector3(0,0,5), cubepaddle.position);
+            console.log("w");
+
     	}
     	if(event.key == "s"){
-    		//cube.position.subtractInPlace(boxVectorz);
-    	}
-    	if (event.key == "a" && event.key == "w"){
-           // cube.position.subtractInPlace(boxVectorx).addInPlace(boxVectorz)
-    	}
-//diagonal controls 
-    	if (event.key == "a" && event.key == "s"){
+            cubepaddle.physicsImpostor.applyImpulse(new BABYLON.Vector3(0,0,-5), cubepaddle.position);
+            console.log("s");
 
     	}
-    	if (event.key == "a" && event.key == "w"){
+//     	if (event.key == "a" && event.key == "w"){
+//            // cube.position.subtractInPlace(boxVectorx).addInPlace(boxVectorz)
+//     	}
+// //diagonal controls 
+//     	if (event.key == "a" && event.key == "s"){
 
-    	}
-    	if (event.key == "a" && event.key == "s"){
+//     	}
+//     	if (event.key == "a" && event.key == "w"){
 
-    	}
-    	if (event.key == "d" && event.key == "w"){
+//     	}
+//     	if (event.key == "a" && event.key == "s"){
 
-    	}
-    	if (event.key == "d" && event.key == "s"){
+//     	}
+//     	if (event.key == "d" && event.key == "w"){
 
-    	}
+//     	}
+//     	if (event.key == "d" && event.key == "s"){
+
+//     	}
 
    //  	if( == duck.right){
    //  		duck.pos.x += duck.movespeed;

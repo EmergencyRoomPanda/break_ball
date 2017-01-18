@@ -12,6 +12,7 @@ function Cube( x, y, z, size, scene){
 
 		this.position; 
 		console.log("buttssss")
+		size = size || {l:5, w:10, h:2}; 
 
 	this.draw = function(){
 		// console.log("biteme")
@@ -62,10 +63,12 @@ function Cubes(number,_,scene){
 	this.drawRow = function(invx){
 		//var boxs = [];
 		//var boxes = [];
+
+		console.log("WTF man?")
 		for (var i = 0; i <= number; i++) {
         	var box = BABYLON.MeshBuilder.CreateBox("Box", {width: 2, height: 2, depth: 2}, scene);
         	//console.log(boxes);
-        	// boxes[i] =  box
+        	//boxes[i] =  box
         	box.position = invx == true?  new BABYLON.Vector3( i*-_, 0 , 0) : new BABYLON.Vector3(i*_, 0, 0);
         	//boxsPos[i] = box.position;
         	this.position = box.position;
